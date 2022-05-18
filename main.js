@@ -64,30 +64,12 @@ async function loadData(url) {
     layerControl.addOverlay(overlay, "Wetterstationen");
     overlay.addTo(map);
 
+
     L.geoJSON(geojson, {
         pointToLayer: function(geoJsonPoint, latlng) {
           
 
-            L.geoJSON(geojson, {
-    pointToLayer: function(geoJsonPoint, latlng) {
-      
-        let popup = `
-        <strong>${geoJsonPoint.properties.name}</strong>
-        (${geoJsonPoint.geometry.coordinates[2]}m)  
-         
-        `;
-        return L.marker(latlng, {
-            icon: L.icon({
-                iconUrl: "icons/wifi.png",
-                iconAnchor: [16, 37],
-                popupAnchor: [0, -37]
-            })
-        }).bindPopup(popup);
-    }
-}).addTo(overlay);
-
-
-
+            
             let popup = `
             <strong>${geoJsonPoint.properties.name}</strong>
             (${geoJsonPoint.geometry.coordinates[2]}m)  
