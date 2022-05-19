@@ -55,7 +55,10 @@ L.control.fullscreen().addTo(map);
 // Wetterstationslayer beim Laden anzeigen
 overlays.stations.addTo(map);
 
-// Wetterstationen
+// Wetterstationen mit icons und popups
+let drawStations = function(geojson){
+    
+
 async function loadData(url) {
     let response = await fetch(url);
     let geojson = await response.json();
@@ -87,6 +90,10 @@ async function loadData(url) {
     
     
     
+
+
+}
+
 
     // Wetterstationen mit Icons und Popups implementieren
 }
