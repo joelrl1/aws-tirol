@@ -161,7 +161,7 @@ let drawSnaowheigt = function(geojson) {
     }).addTo(overlays.snowheight);
  }
 
- //wind
+ //wind muss noch transform rein
 
  let drawWind = function(geojson) {
     L.geoJSON(geojson, {
