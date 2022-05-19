@@ -93,7 +93,7 @@ L.control.fullscreen().addTo(map);
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon",
-                    html:` <span> ${geojsonPoint.properties.LT} </span>`
+                    html:` <span> ${geoJsonPoint.properties.LT} </span>`
                     
                 })
             }).bindPopup(popup);
