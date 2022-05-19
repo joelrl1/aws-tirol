@@ -109,6 +109,11 @@ for (let rule of ramp){
             <strong>${geoJsonPoint.properties.name}</strong>
             (${geoJsonPoint.geometry.coordinates[2]}m)  
             `;
+            let color = getColor(
+                geoJsonPoint.properties.LT,
+                COLORS.temperature
+            );
+           
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon",
