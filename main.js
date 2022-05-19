@@ -53,8 +53,20 @@ L.control.scale({
 L.control.fullscreen().addTo(map);
 
 // Wetterstationslayer beim Laden anzeigen
- overlays.stations.addTo(map);
+ overlays.temperature.addTo(map);
 
+ // Farben nach wert und schwellen ermitteln
+ let getColor = function(value, ramp){
+console.log(value,ramp);
+for (let rule of ramp){
+    console.log(rule);
+    if(value>= rule.min && value < rule.max) {
+        return rule.color;
+    }
+}
+
+ };
+ console.log(getColor(-40, COLORS.temperature));
  // Stationen
 
  let drawStations = function(geojson) {
