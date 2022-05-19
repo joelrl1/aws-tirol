@@ -166,7 +166,7 @@ let drawSnaowheigt = function(geojson) {
  let drawWind = function(geojson) {
     L.geoJSON(geojson, {
         filter: function(geoJsonPoint){
-            if(geoJsonPoint.properties.WG > 0 && geoJsonPoint.properties.WG < 300 ){
+            if(geoJsonPoint.properties.WG > 0 && geoJsonPoint.properties.WG < 300 && geoJsonPoint.properties.WR >=0 && geoJsonPoint.properties.WR <=360 ){
                 return true;
 
             }
@@ -183,11 +183,13 @@ let drawSnaowheigt = function(geojson) {
                 geoJsonPoint.properties.WG,
                 COLORS.wind
             );
+            let deg 
            
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon",
-                    html:` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.WG.toFixed(0)} </span>`
+                    html:` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.WG.toFixed(0)} </span>`,
+               
                     
                 })
             }).bindPopup(popup);
