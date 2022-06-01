@@ -15,7 +15,7 @@ let startLayer = L.tileLayer("https://static.avalanche.report/tms/{z}/{x}/{y}.we
 let overlays = {
     stations: L.featureGroup(),
     temperature: L.featureGroup(),
-    precipitation: L.featureGroup(),
+    humidity: L.featureGroup(),
     snowheight: L.featureGroup(),
     wind: L.featureGroup(),
 };
@@ -36,7 +36,7 @@ let layerControl = L.control.layers({
 }, {
     "Wetterstationen": overlays.stations,
     "Temperatur": overlays.temperature,
-    "Niederschlag": overlays.precipitation,
+    "Relative Luftfeuchtigkeit": overlays.humidity,
     "Schneehöhe": overlays.snowheight,
     "Wind": overlays.wind
 }).addTo(map);
@@ -53,7 +53,7 @@ L.control.scale({
 L.control.fullscreen().addTo(map);
 
 // Wetterstationslayer beim Laden anzeigen
-overlays.temperature.addTo(map);
+overlays.humidity.addTo(map);
 
 // Farben nach wert und schwellen ermitteln
 let getColor = function (value, ramp) {
@@ -189,6 +189,40 @@ let drawWind = function(geojson) {
         }
     }).addTo(overlays.wind);
 }
+
+// Relative Luftfeuchtigkeit
+let drawHumidity = function (geojson) {
+    L.geoJSON(geojson, {
+        filter: function (geoJsonPoint) {
+            if (geoJsonPoint.properties.RH >= 0  && geoJsonPoint.properties.RH <= 100) {
+                return true;
+
+            }
+
+        },
+        pointToLayer: function (geoJsonPoint, latlng) {
+           
+            let popup = `
+            
+            <strong>${geoJsonPoint.properties.name}</strong>
+            (${geoJsonPoint.geometry.coordinates[2]}m)  
+            `;
+            let color = getColor(
+                geoJsonPoint.properties.RH,
+                COLORS.humidity
+            );
+
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    className: "aws-div-icon",
+                    html: ` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.RH.toFixed(0)} </span>`
+
+                })
+            }).bindPopup(popup);
+        }
+    }).addTo(overlays.humidity);
+}
+
 // Wetterstationen
 async function loadData(url) {
     let response = await fetch(url);
