@@ -215,7 +215,7 @@ let drawHumidity = function (geojson) {
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon",
-                    html: ` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.RH.toFixed(0)} </span>`
+                    html: ` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.RH.toFixed(1)} </span>`
 
                 })
             }).bindPopup(popup);
