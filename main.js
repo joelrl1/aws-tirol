@@ -73,10 +73,13 @@ let drawStations = function (geojson) {
     L.geoJSON(geojson, {
         pointToLayer: function (geoJsonPoint, latlng) {
             //console.log(geoJsonPoint.properties.NAME);
+           
+
             let popup = `
             
             <strong>${geoJsonPoint.properties.name}</strong>
-            (${geoJsonPoint.geometry.coordinates[2]}m)  
+            (${geoJsonPoint.geometry.coordinates[2]}m) <br>
+            ${z} 
             `;
             return L.marker(latlng, {
                 icon: L.icon({
@@ -133,7 +136,7 @@ let drawSnowheigt = function (geojson) {
         filter: function (geoJsonPoint) {
             if (geoJsonPoint.properties.HS > 0 && geoJsonPoint.properties.HS < 15000) {
                 return true;
-
+         
             }
 
         },
@@ -162,14 +165,14 @@ let drawSnowheigt = function (geojson) {
 
 //wind 
 
-let drawWind = function(geojson) {
+let drawWind = function (geojson) {
     L.geoJSON(geojson, {
-        filter: function(geoJsonPoint) {
-            if (geoJsonPoint.properties.WG > 0 && geoJsonPoint.properties.WG < 300 && geoJsonPoint.properties.WR >=0 && geoJsonPoint.properties.WR <=360) {
+        filter: function (geoJsonPoint) {
+            if (geoJsonPoint.properties.WG > 0 && geoJsonPoint.properties.WG < 300 && geoJsonPoint.properties.WR >= 0 && geoJsonPoint.properties.WR <= 360) {
                 return true;
             }
         },
-        pointToLayer: function(geoJsonPoint, latlng) {
+        pointToLayer: function (geoJsonPoint, latlng) {
             let popup = `
                 ${geoJsonPoint.properties.name} (${geoJsonPoint.geometry.coordinates[2]}m)
             `;
@@ -194,14 +197,14 @@ let drawWind = function(geojson) {
 let drawHumidity = function (geojson) {
     L.geoJSON(geojson, {
         filter: function (geoJsonPoint) {
-            if (geoJsonPoint.properties.RH >= 0  && geoJsonPoint.properties.RH <= 100) {
+            if (geoJsonPoint.properties.RH >= 0 && geoJsonPoint.properties.RH <= 100) {
                 return true;
 
             }
 
         },
         pointToLayer: function (geoJsonPoint, latlng) {
-           
+
             let popup = `
             
             <strong>${geoJsonPoint.properties.name}</strong>
