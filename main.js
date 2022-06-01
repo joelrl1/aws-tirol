@@ -128,7 +128,7 @@ let drawTemperature = function (geojson) {
 
 
 //schneehöhen
-let drawSnaowheigt = function (geojson) {
+let drawSnowheigt = function (geojson) {
     L.geoJSON(geojson, {
         filter: function (geoJsonPoint) {
             if (geoJsonPoint.properties.HS > 0 && geoJsonPoint.properties.HS < 15000) {
