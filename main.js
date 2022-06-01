@@ -53,23 +53,23 @@ L.control.scale({
 L.control.fullscreen().addTo(map);
 
 // Wetterstationslayer beim Laden anzeigen
- overlays.temperature.addTo(map);
+overlays.temperature.addTo(map);
 
- // Farben nach wert und schwellen ermitteln
- let getColor = function(value, ramp){
-console.log(value,ramp);
-for (let rule of ramp){
-    console.log(rule);
-    if(value>= rule.min && value < rule.max) {
-        return rule.color;
+// Farben nach wert und schwellen ermitteln
+let getColor = function (value, ramp) {
+    console.log(value, ramp);
+    for (let rule of ramp) {
+        console.log(rule);
+        if (value >= rule.min && value < rule.max) {
+            return rule.color;
+        }
     }
-}
 
- };
- console.log(getColor(-40, COLORS.temperature));
- // Stationen
+};
+// console.log(getColor(-40, COLORS.temperature));
+// Stationen
 
- let drawStations = function(geojson) {
+let drawStations = function (geojson) {
     L.geoJSON(geojson, {
         pointToLayer: function (geoJsonPoint, latlng) {
             //console.log(geoJsonPoint.properties.NAME);
@@ -83,20 +83,20 @@ for (let rule of ramp){
                     iconUrl: "icons/wifi.png",
                     iconAnchor: [16, 37],
                     popupAnchor: [0, -37]
-                    
+
                 })
             }).bindPopup(popup);
         }
     }).addTo(overlays.stations);
- }
+}
 
 
- //Temperatur
+//Temperatur
 
- let drawTemperature = function(geojson) {
+let drawTemperature = function (geojson) {
     L.geoJSON(geojson, {
-        filter: function(geoJsonPoint){
-            if(geoJsonPoint.properties.LT > -50 && geoJsonPoint.properties.LT < 50 ){
+        filter: function (geoJsonPoint) {
+            if (geoJsonPoint.properties.LT > -50 && geoJsonPoint.properties.LT < 50) {
                 return true;
 
             }
@@ -113,26 +113,25 @@ for (let rule of ramp){
                 geoJsonPoint.properties.LT,
                 COLORS.temperature
             );
-           
+
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon",
-                    html:` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.LT.toFixed(1)} </span>`
-                    
+                    html: ` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.LT.toFixed(1)} </span>`
+
                 })
             }).bindPopup(popup);
         }
     }).addTo(overlays.temperature);
- }
+}
 
 
-loadData("https://static.avalanche.report/weather_stations/stations.geojson");
 
 //schneehöhen
-let drawSnaowheigt = function(geojson) {
+let drawSnaowheigt = function (geojson) {
     L.geoJSON(geojson, {
-        filter: function(geoJsonPoint){
-            if(geoJsonPoint.properties.HS > 0 && geoJsonPoint.properties.HS < 15000 ){
+        filter: function (geoJsonPoint) {
+            if (geoJsonPoint.properties.HS > 0 && geoJsonPoint.properties.HS < 15000) {
                 return true;
 
             }
@@ -149,53 +148,47 @@ let drawSnaowheigt = function(geojson) {
                 geoJsonPoint.properties.HS,
                 COLORS.snowheight
             );
-           
+
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon",
-                    html:` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.HS.toFixed(0)} </span>`
-                    
+                    html: ` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.HS.toFixed(0)} </span>`
+
                 })
             }).bindPopup(popup);
         }
     }).addTo(overlays.snowheight);
- }
+}
 
- //wind muss noch transform rein
+//wind 
 
- let drawWind = function(geojson) {
+let drawWind = function(geojson) {
     L.geoJSON(geojson, {
-        filter: function(geoJsonPoint){
-            if(geoJsonPoint.properties.WG > 0 && geoJsonPoint.properties.WG < 300 && geoJsonPoint.properties.WR >=0 && geoJsonPoint.properties.WR <=360 ){
+        filter: function(geoJsonPoint) {
+            if (geoJsonPoint.properties.WG > 0 && geoJsonPoint.properties.WG < 300 && geoJsonPoint.properties.WR >=0 && geoJsonPoint.properties.WR <=360) {
                 return true;
-
             }
-
         },
-        pointToLayer: function (geoJsonPoint, latlng) {
-            //console.log(geoJsonPoint.properties.NAME);
+        pointToLayer: function(geoJsonPoint, latlng) {
             let popup = `
-            
-            <strong>${geoJsonPoint.properties.name}</strong>
-            (${geoJsonPoint.geometry.coordinates[2]}m)  
+                ${geoJsonPoint.properties.name} (${geoJsonPoint.geometry.coordinates[2]}m)
             `;
             let color = getColor(
                 geoJsonPoint.properties.WG,
                 COLORS.wind
             );
-            let deg 
-           
+            let deg = geoJsonPoint.properties.WR;
+            //console.log(deg);
+
             return L.marker(latlng, {
                 icon: L.divIcon({
                     className: "aws-div-icon",
-                    html:` <span style = "background-color: ${color}"> ${geoJsonPoint.properties.WG.toFixed(0)} </span>`,
-               
-                    
+                    html: `<span style="background-color:${color};transform: rotate(${deg}deg)"><i class="fa-solid fa-circle-arrow-up"></i> ${geoJsonPoint.properties.WG.toFixed(0)}</span>`
                 })
             }).bindPopup(popup);
         }
     }).addTo(overlays.wind);
- }
+}
 // Wetterstationen
 async function loadData(url) {
     let response = await fetch(url);
