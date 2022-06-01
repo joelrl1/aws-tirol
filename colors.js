@@ -151,6 +151,5 @@ const COLORS = {
         min: 90,
         max: 100,
         color: "#7677E1"
-    }
-]
+    }]
 }

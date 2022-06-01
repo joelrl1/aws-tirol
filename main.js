@@ -230,7 +230,7 @@ async function loadData(url) {
 
     drawStations(geojson);
     drawTemperature(geojson);
-    drawSnaowheigt(geojson);
+    drawSnowheigt(geojson);
     drawWind(geojson);
 };
 
