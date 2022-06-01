@@ -74,12 +74,36 @@ let drawStations = function (geojson) {
         pointToLayer: function (geoJsonPoint, latlng) {
             //console.log(geoJsonPoint.properties.NAME);
            
+            let temperatur = ``
+            if (geoJsonPoint.properties.LT > -50 && geoJsonPoint.properties.LT < 50) {
+                temperatur = `Lufttemperatur: ${geoJsonPoint.properties.LT.toFixed(1)}(°C)<br>`
+            }
+            let snowheight = ``
+            if (geoJsonPoint.properties.HS > 0 && geoJsonPoint.properties.HS < 15000) {
+                snowheight = `Schneehöhe: ${geoJsonPoint.properties.HS.toFixed(1)}(cm)<br>`
+            }
+            let wind = ``
+            if (geoJsonPoint.properties.WG > 0 && geoJsonPoint.properties.WG < 300) {
+                wind = `Windgeschwindigkeit: ${(geoJsonPoint.properties.WG * 3.6).toFixed(1)}(km/h)<br>`
+            }
+            let windrichtung = ``
+            if (geoJsonPoint.properties.WR >= 0 && geoJsonPoint.properties.WR <= 360) {
+                windrichtung = `Windrichtung: ${geoJsonPoint.properties.WR.toFixed(1)}(°)<br>`
+            }
+            let humidity = ``
+            if (geoJsonPoint.properties.RH >= 0 && geoJsonPoint.properties.RH <= 100) {
+                humidity = `Relative Luftfeuchtigkeit: ${geoJsonPoint.properties.RH.toFixed(1)}(%)<br>`
+            }
 
             let popup = `
             
             <strong>${geoJsonPoint.properties.name}</strong>
             (${geoJsonPoint.geometry.coordinates[2]}m) <br>
-            ${z} 
+            ${temperatur}
+            ${snowheight}
+            ${wind}
+            ${windrichtung}
+            ${humidity}
             `;
             return L.marker(latlng, {
                 icon: L.icon({
